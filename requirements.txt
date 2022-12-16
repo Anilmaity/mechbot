@@ -1,0 +1,17 @@
+asgiref==3.5.2
+blynklib==0.2.6
+Django==4.1.3
+Encoder==1.1
+future==0.18.2
+iso8601==1.1.0
+PyYAML==6.0
+serial==0.0.97
+sqlparse==0.4.3
+tzdata==2022.6
+whitenoise==6.2.0
+django-redis==4.12.1
+django-redis-cache==3.0.0
+channels-redis==3.4.1
+
+opencv-python~=4.6.0.66
+channels==3.0.4

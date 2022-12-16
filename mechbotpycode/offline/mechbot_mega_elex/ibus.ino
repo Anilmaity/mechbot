@@ -33,8 +33,11 @@ void ibus_loop() {
       sterring_value =0;
     }
 
-
-
+// arduino has 8 bit resolution  0 ~ 0V  255 ~ 5V
+// max throttle pwm value = 147 , min throttle pwm value = 40 fowrward
+// max throttle pwm value = -147 , min throttle pwm value = -40 reverse
+// max sterring_value pwm value = 120 , min brake pwm value = 0  right
+// max sterring_value pwm value = -120 , min brake pwm value = 0  left
 
   //-------------------------Throttle---------------------
     if (channel_data[1] <= 2000 && channel_data[1] >= 1600) {
