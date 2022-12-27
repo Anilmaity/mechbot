@@ -1,12 +1,9 @@
 from django.urls import path
-from . import views
-
+from . import views, Get_FS_Data
 
 from django.conf import settings
 from django.conf.urls.static import static
 from .apis import livevideo
-
-
 
 urlpatterns = [
     path('', views.index, name='index'),

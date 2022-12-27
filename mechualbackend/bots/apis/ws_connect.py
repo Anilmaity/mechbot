@@ -25,26 +25,31 @@ import random
 
 
 async def control_input():
-    async with websockets.connect("ws://127.0.0.1:8000/ws/controller/") as websocket:
+    async with websockets.connect("ws://192.168.43.156:8000/ws/controller/") as websocket:
         while True:
-            data = {'message': "control input",
-                    'username': "anil pc",
-                    "time": str(datetime.datetime.utcnow().time()),
-                    "CH1": random.randint(1000, 2000),
-                    "CH2": random.randint(1000, 2000),
-                    "CH3": random.randint(1000, 2000),
-                    "CH4": random.randint(1000, 2000),
-                    "CH5": random.randint(1000, 2000),
-                    "CH6": random.randint(1000, 2000),
-                    }
+            data = {'message': "Get_FS_data", 'time': str(datetime.datetime.utcnow().time())}
+
 
             await websocket.send(json.dumps(data))
-            time.sleep(1)
             try:
                 message = await websocket.recv()
             except websockets.ConnectionClosedOK:
                 break
-            print(message)
+            # print(message)
+            # convert message to json
+            message = json.loads(message)
+            # calculate time difference
+            time_in = datetime.datetime.strptime(message['time_in'], '%H:%M:%S.%f')
+            time_out = datetime.datetime.strptime(str(datetime.datetime.utcnow().time()), '%H:%M:%S.%f')
+            time_diff = time_out - time_in
+            # in seconds
+            time_diff = int(1000*(round(time_diff.total_seconds(),3)))
+            time_in = datetime.datetime.strptime(message['time_in'], '%H:%M:%S.%f')
+            time_out = datetime.datetime.strptime(message['time_out'], '%H:%M:%S.%f')
+            server_time_diff = time_out - time_in
+            server_time_diff = int(1000*(round(server_time_diff.total_seconds(),3)))
+
+            print(message["data"], "T " +str(time_diff) +" ms ", "S "+str(server_time_diff)+ " ms " , time_diff-server_time_diff)
 
 asyncio.run(control_input())
 

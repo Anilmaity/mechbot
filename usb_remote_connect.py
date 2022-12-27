@@ -65,9 +65,9 @@
 import serial
 import time
 
-ser = serial.Serial('COM3', 115200, timeout=1)
+ser = serial.Serial('COM8', 115200, timeout=1)
 ser.flush()
-# 8N1
+# 8N1cmd
 # Data frame
 # 32 bytes
 # Structure
@@ -90,8 +90,9 @@ online = False
 while True:
     if ser.in_waiting > 0:
         st = time.time()
-        hex = ser.read_until(b'@').strip(b'@')
-        #print(hex)
+        # hex = ser.read_until(b'@').strip(b'@')
+        hex = ser.read(32)
+        print(hex)
         dt = time.time() - st
 
         # print(start, cmd)
