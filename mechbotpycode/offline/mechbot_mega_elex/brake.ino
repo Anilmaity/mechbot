@@ -32,7 +32,7 @@ void decode_rotation_A_B0() {
     B_Current_position_A[0] += 1;
 
   }
-  Current_brake_position[0] = int((B_Current_position_B[0] + B_Current_position_A[0]) / 2);
+  Current_brake_position[0] = int((-B_Current_position_B[0] - B_Current_position_A[0]) / 2);
 
 
 }
@@ -86,58 +86,14 @@ void decode_rotation_B_B0() {
     B_Current_position_B[0] -= 1;
 
   }
-  Current_brake_position[0] = int((B_Current_position_B[0] + B_Current_position_A[0]) / 2);
+  Current_brake_position[0] = int((-B_Current_position_B[0] - B_Current_position_A[0]) / 2);
 
 
 }
 
 void braking() {
 
-
-  if (enable_encoder == false) 
-    { B_position_error[0] = -(Brake_Speed);
-      Current_brake_position[0] = 0;
-      B_Current_position_B[0]=0;
-      B_Current_position_A[0]=0;
-    
-    }
-    else if (abs(Current_brake_position[0]) < 3000 || enable_encoder == false) {
-      B_position_error[0] = -(Brake_Speed - Current_brake_position[0]);
-    }
-
-    else {
-      B_position_error[0] = -(Brake_Speed );
-
-      if (enable_encoder_0 == true) {
-        detachInterrupt(digitalPinToInterrupt(B_ENC_A[0]));
-        detachInterrupt(digitalPinToInterrupt(B_ENC_B[0]));
-        enable_encoder_0 = false;
-      }
-
-    }
-    if (enable_encoder == false) 
-      { B_position_error[1] = -(Brake_Speed);
-        Current_brake_position[1] = 0;
-      B_Current_position_B[1]=0;
-      B_Current_position_A[1]=0;
-
-      }
-      else if (abs(Current_brake_position[1]) < 3000) {
-        B_position_error[1] = -(Brake_Speed - Current_brake_position[1]);
-
-      }
-
-      else {
-        B_position_error[1] = -(Brake_Speed);
-
-        if (enable_encoder_1 == true) {
-          detachInterrupt(digitalPinToInterrupt(B_ENC_A[1]));
-          detachInterrupt(digitalPinToInterrupt(B_ENC_B[1]));
-          enable_encoder_1 = false;
-        }
-      }
-
-      if (abs(Brake_Speed) > 50)
+    if (abs(Brake) > 200)
       {
         digitalWrite(Brake_pin, LOW);
       }
@@ -146,12 +102,16 @@ void braking() {
 
       }
 
-      if (B_position_error[0] > 10) {
+      B_position_error[0] = Brake - Current_brake_position[0];
+      B_position_error[1] = Brake - Current_brake_position[1];
+
+
+      if (B_position_error[0] > 50) {
         analogWrite(B_PWM_pin[0], 250);
         digitalWrite(B_DIR_pin[0], HIGH);
 
       }
-      else if ((B_position_error[0] < -10)) {
+      else if ((B_position_error[0] < -50)) {
         analogWrite(B_PWM_pin[0], 250);
         digitalWrite(B_DIR_pin[0], LOW);
       }
@@ -161,13 +121,13 @@ void braking() {
       }
 
 
-      if (B_position_error[1] > 10) {
+      if (B_position_error[1] > 50) {
         analogWrite(B_PWM_pin[1], 250);
-        digitalWrite(B_DIR_pin[1], HIGH);
+        digitalWrite(B_DIR_pin[1], LOW);
 
       }
-      else if (B_position_error[1] < -10) {
-        digitalWrite(B_DIR_pin[1], LOW);
+      else if (B_position_error[1] < -50) {
+        digitalWrite(B_DIR_pin[1], HIGH);
         analogWrite(B_PWM_pin[1], 250);
       }
       else {
