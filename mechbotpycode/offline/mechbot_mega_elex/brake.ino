@@ -96,9 +96,13 @@ void braking() {
     if (abs(Brake) > 200)
       {
         digitalWrite(Brake_pin, LOW);
+        digitalWrite(back_light_pin, LOW);
+
       }
       else {
         digitalWrite(Brake_pin, HIGH);
+        digitalWrite(back_light_pin, HIGH);
+
 
       }
 

@@ -72,6 +72,31 @@ void ibus_loop() {
       Drive_mode ='N';
     }
 
+    //  all lights
+    if (channel_data[9] == 2000) {
+       digitalWrite(all_light_pin, HIGH);
+    }
+    else
+    {
+       digitalWrite(all_light_pin, LOW);
+    }
+
+    // side lights
+    if (channel_data[9] >= 1600) {
+       digitalWrite(side_light_pin[0], HIGH);
+       digitalWrite(side_light_pin[1], LOW);
+
+    }
+    else if(channel_data[9] <= 1400 )
+    {
+       digitalWrite(side_light_pin[1], HIGH);
+       digitalWrite(side_light_pin[0], LOW);
+
+    }
+    else{
+       digitalWrite(side_light_pin[0], LOW);
+       digitalWrite(side_light_pin[1], LOW);
+    }
 
 
 

@@ -46,9 +46,9 @@ int Brake = 0;
 
 
 //-----------------Lights----------------
-int Head_light_pin[2] = {25,26};
-int back_light_pin[2]= {27,28};
-int side_light_pin[2] = {29,30};
+int all_light_pin = 28;
+int back_light_pin= 30;
+int side_light_pin[2] = {32,34};
 
 char Head_light_mode = 'L';
 char left_side_light = 'N';
