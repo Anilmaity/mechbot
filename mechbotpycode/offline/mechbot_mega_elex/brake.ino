@@ -86,7 +86,7 @@ void decode_rotation_B_B0() {
     B_Current_position_B[0] -= 1;
 
   }
-  Current_brake_position[0] = int((-B_Current_position_B[0] - B_Current_position_A[0]) / 2);
+  Current_brake_position[0] = int((-B_Current_position_B[0] - B_Current_position_A[0])/ 2);
 
 
 }
@@ -106,8 +106,11 @@ void braking() {
 
       }
 
-      B_position_error[0] = Brake - Current_brake_position[0];
-      B_position_error[1] = Brake - Current_brake_position[1];
+//       B_position_error[0] = Brake - Current_brake_position[0];
+//       B_position_error[1] = Brake - Current_brake_position[1];
+
+      B_position_error[0] = Brake ;
+      B_position_error[1] = Brake ;
 
 
       if (B_position_error[0] > 50) {
@@ -124,6 +127,20 @@ void braking() {
 
       }
 
+      if(value_brake > 60){
+      long int Current_brake_position_temp_0 =  Current_brake_position[0];
+      long int Current_brake_position_temp_0 = Current_brake_position[1];
+        digitalWrite(B_DIR_pin[1], HIGH);
+        analogWrite(B_PWM_pin[1], value_brake);
+        analogWrite(B_PWM_pin[0], value_brake);
+        digitalWrite(B_DIR_pin[0], LOW);
+        delay(50);
+        analogWrite(B_PWM_pin[0], 0);
+        analogWrite(B_PWM_pin[1], 0);
+        Current_brake_position[0] = Current_brake_position_temp_0;
+        Current_brake_position[1] = Current_brake_position_temp_1;
+      }
+
 
       if (B_position_error[1] > 50) {
         analogWrite(B_PWM_pin[1], 250);
@@ -137,4 +154,7 @@ void braking() {
       else {
         analogWrite(B_PWM_pin[1], 0);
       }
+
+
+
     }

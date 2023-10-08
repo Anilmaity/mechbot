@@ -36,13 +36,14 @@ int B_ENC_A[2] = {19,21};
 int B_ENC_B[2] = {18,20};
 int B_position_error[2] = {0,0};
 int Brake_Speed = 0;
-int B_Current_position_B[2] = {0,0};
-int B_Current_position_A[2] = {0,0};
+float B_Current_position_B[2] = {0,0};
+float B_Current_position_A[2] = {0,0};
 int Current_brake_position[2] = {0,0};
 int enable_encoder_0 = false;
 int enable_encoder_1 = false;
 bool enable_encoder = true;
 int Brake = 0;
+int value_brake = 0;
 
 
 //-----------------Lights----------------
