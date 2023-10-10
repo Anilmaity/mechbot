@@ -28,6 +28,8 @@ void sterring_loop() {
 
 void throttle_setup() {
 
+  TCCR0B = TCCR0B & B11111000 | B00000010;
+
   TCCR3B = TCCR3B & B11111000 | B00000010; // for PWM frequency of 31372.55 Hz
   TCCR2B = TCCR2B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
   TCCR1B = TCCR1B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
