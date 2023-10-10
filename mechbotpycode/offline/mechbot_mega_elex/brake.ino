@@ -108,53 +108,60 @@ void braking() {
 
 //       B_position_error[0] = Brake - Current_brake_position[0];
 //       B_position_error[1] = Brake - Current_brake_position[1];
+//
+//       B_position_error[0] = Brake ;
+//       B_position_error[1] = Brake ;
+//
+//
+//       if (B_position_error[0] > 50) {
+//         analogWrite(B_PWM_pin[0], 250);
+//         digitalWrite(B_DIR_pin[0], HIGH);
+//
+//       }
+//       else if ((B_position_error[0] < -50)) {
+//         analogWrite(B_PWM_pin[0], 250);
+//         digitalWrite(B_DIR_pin[0], LOW);
+//       }
+//       else {
+//         analogWrite(B_PWM_pin[0], 0);
+//
+//       }
+//
+//
+//
+//
+//       if (B_position_error[1] > 50) {
+//         analogWrite(B_PWM_pin[1], 250);
+//         digitalWrite(B_DIR_pin[1], LOW);
+//
+//       }
+//       else if (B_position_error[1] < -50) {
+//         digitalWrite(B_DIR_pin[1], HIGH);
+//         analogWrite(B_PWM_pin[1], 250);
+//       }
+//       else {
+//         analogWrite(B_PWM_pin[1], 0);
+//       }
 
-      B_position_error[0] = Brake ;
-      B_position_error[1] = Brake ;
 
-
-      if (B_position_error[0] > 50) {
+    if(value_brake > 60){
+        digitalWrite(B_DIR_pin[1], HIGH);
+        analogWrite(B_PWM_pin[1], 250);
+        analogWrite(B_PWM_pin[0], 250);
+        digitalWrite(B_DIR_pin[0], LOW);
+      }
+      else if (Brake > 1000){
+        digitalWrite(B_DIR_pin[1], LOW);
+        analogWrite(B_PWM_pin[1], 250);
         analogWrite(B_PWM_pin[0], 250);
         digitalWrite(B_DIR_pin[0], HIGH);
-
       }
-      else if ((B_position_error[0] < -50)) {
-        analogWrite(B_PWM_pin[0], 250);
+      else{
+        digitalWrite(B_DIR_pin[1], HIGH);
+        analogWrite(B_PWM_pin[1], 0);
+        analogWrite(B_PWM_pin[0], 0);
         digitalWrite(B_DIR_pin[0], LOW);
       }
-      else {
-        analogWrite(B_PWM_pin[0], 0);
-
-      }
-
-      if(value_brake > 60){
-      long int Current_brake_position_temp_0 =  Current_brake_position[0];
-      long int Current_brake_position_temp_0 = Current_brake_position[1];
-        digitalWrite(B_DIR_pin[1], HIGH);
-        analogWrite(B_PWM_pin[1], value_brake);
-        analogWrite(B_PWM_pin[0], value_brake);
-        digitalWrite(B_DIR_pin[0], LOW);
-        delay(50);
-        analogWrite(B_PWM_pin[0], 0);
-        analogWrite(B_PWM_pin[1], 0);
-        Current_brake_position[0] = Current_brake_position_temp_0;
-        Current_brake_position[1] = Current_brake_position_temp_1;
-      }
-
-
-      if (B_position_error[1] > 50) {
-        analogWrite(B_PWM_pin[1], 250);
-        digitalWrite(B_DIR_pin[1], LOW);
-
-      }
-      else if (B_position_error[1] < -50) {
-        digitalWrite(B_DIR_pin[1], HIGH);
-        analogWrite(B_PWM_pin[1], 250);
-      }
-      else {
-        analogWrite(B_PWM_pin[1], 0);
-      }
-
 
 
     }
