@@ -6,7 +6,7 @@ void sterring_setup() {
 
 
 void sterring_loop() {
-  sensorValue = analogRead(S_SEN);
+  sensorValue = analogRead(S_SEN); // reading the sensor value potiometer
   error = 0.5 * (sterring_value - sensorValue) + 0.5 * error;
 
   if (abs(error) > 8) {
@@ -28,19 +28,12 @@ void sterring_loop() {
 
 void throttle_setup() {
 
-  TCCR0B = TCCR0B & B11111000 | B00000010;
-
-  TCCR3B = TCCR3B & B11111000 | B00000010; // for PWM frequency of 31372.55 Hz
-  TCCR2B = TCCR2B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
-  TCCR1B = TCCR1B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
-  TCCR4B = TCCR4B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
+  //TCCR0B = TCCR0B & B11111000 | B00000010; // for D4 D5 change frequency
 
   // TCCR2B = TCCR2B & B11111000 | B00000010; // for PWM frequency of 3921.16 Hz
-
-  pinMode(throttle_pin,OUTPUT);
-
   //Code for Available PWM frequency for D3 & D11:
-  //TCCR2B = TCCR2B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
+
+  TCCR2B = TCCR2B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
 
 
 // TCCR2B = TCCR2B & B11111000 | B00000011; // for PWM frequency of 980.39 Hz
@@ -52,13 +45,17 @@ void throttle_setup() {
 // TCCR2B = TCCR2B & B11111000 | B00000110; // for PWM frequency of 122.55 Hz
 
 // TCCR2B = TCCR2B & B11111000 | B00000111; // for PWM frequency of 30.64 Hz
+
+  pinMode(throttle_pin,OUTPUT);
+
+
 }
 
 void throttling() {
 
   if (throttle > initial_throttle) {
     analogWrite(throttle_pin, throttle);
-    
+
   } else {
     analogWrite(throttle_pin, 0);
   }

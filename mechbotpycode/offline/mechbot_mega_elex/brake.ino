@@ -1,5 +1,6 @@
 
 
+
 void brake_setup()
 {
 
@@ -32,7 +33,7 @@ void decode_rotation_A_B0() {
     B_Current_position_A[0] += 1;
 
   }
-  Current_brake_position[0] = int((-B_Current_position_B[0] - B_Current_position_A[0]) / 2);
+  Current_brake_position[0] = int((B_Current_position_B[0] + B_Current_position_A[0]) / 2);
 
 
 }
@@ -86,12 +87,10 @@ void decode_rotation_B_B0() {
     B_Current_position_B[0] -= 1;
 
   }
-  Current_brake_position[0] = int((-B_Current_position_B[0] - B_Current_position_A[0])/ 2);
+  Current_brake_position[0] = int((B_Current_position_B[0] + B_Current_position_A[0]) / 2) ;
 
 
-}
-
-void braking() {
+}void braking() {
 
     if (abs(Brake) > 200)
       {
@@ -101,8 +100,10 @@ void braking() {
       }
       else {
         digitalWrite(Brake_pin, HIGH);
-        digitalWrite(back_light_pin, HIGH);
 
+        if(value_brake > 60){
+        digitalWrite(back_light_pin, HIGH);
+        }
 
       }
 
@@ -143,8 +144,7 @@ void braking() {
 //         analogWrite(B_PWM_pin[1], 0);
 //       }
 
-
-    if(value_brake > 60){
+ if(value_brake > 60){
         digitalWrite(B_DIR_pin[1], HIGH);
         analogWrite(B_PWM_pin[1], 250);
         analogWrite(B_PWM_pin[0], 250);
@@ -162,6 +162,7 @@ void braking() {
         analogWrite(B_PWM_pin[0], 0);
         digitalWrite(B_DIR_pin[0], LOW);
       }
+
 
 
     }

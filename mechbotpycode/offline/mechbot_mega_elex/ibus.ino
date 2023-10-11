@@ -17,7 +17,7 @@ void ibus_loop() {
 
   
   // Getting values form all channel
-  for (int i = 0; i <= 8 ; i++)
+  for (int i = 0; i <= 9 ; i++)
   {
     channel_data[i] = IBus.readChannel(i); // get latest value for servo channel 1
    Serial.print(channel_data[i]);
@@ -26,14 +26,15 @@ void ibus_loop() {
   }
 
   //--------------------Sterring input mapping ------------------------------
+  int centre_value = 520;  // centre value
      if (channel_data[0] <= 2000 && channel_data[0] >= 1510) {
-      sterring_value = map(channel_data[0], 1500, 2000 , 530, 860);
+      sterring_value = map(channel_data[0], 1500, 2000 , centre_value, 860); // left side limit 860
     }
       else if (channel_data[0] <= 1490 && channel_data[0] >= 1000) {
-      sterring_value = map(channel_data[0], 1000, 1500 , 200 , 530);
+      sterring_value = map(channel_data[0], 1000, 1500 , 200 , centre_value); // right side limit 200
     }
     else{
-      sterring_value =530;
+      sterring_value = centre_value;
     }
 
 // arduino has 8 bit resolution  0 ~ 0V  255 ~ 5V
@@ -51,13 +52,14 @@ void ibus_loop() {
       throttle=initial_throttle;
     }
 
+    // speed mode sitching
         if (channel_data[6] == 2000) {
-          max_limit = 190;
+          max_limit = 190; // change value for high voltage of throttle
         }
         else{
-          max_limit = 125;
+          max_limit = 125;   // change value for low speed mode
         }
- 
+
 
 
 
@@ -74,29 +76,30 @@ void ibus_loop() {
 
     //  all lights
     if (channel_data[9] == 2000) {
-       digitalWrite(all_light_pin, HIGH);
+       digitalWrite(all_light_pin, LOW);
     }
     else
     {
-       digitalWrite(all_light_pin, LOW);
+       digitalWrite(all_light_pin, HIGH);
     }
 
     // side lights
-    if (channel_data[9] >= 1600) {
-       digitalWrite(side_light_pin[0], HIGH);
-       digitalWrite(side_light_pin[1], LOW);
+    if (channel_data[8] >= 1600) {
+       digitalWrite(side_light_pin[0], LOW);
+       digitalWrite(side_light_pin[1], HIGH);
 
     }
-    else if(channel_data[9] <= 1400 )
+    else if(channel_data[8] <= 1400 )
     {
-       digitalWrite(side_light_pin[1], HIGH);
-       digitalWrite(side_light_pin[0], LOW);
+       digitalWrite(side_light_pin[1], LOW);
+       digitalWrite(side_light_pin[0], HIGH);
 
     }
     else{
-       digitalWrite(side_light_pin[0], LOW);
-       digitalWrite(side_light_pin[1], LOW);
+       digitalWrite(side_light_pin[0], HIGH);
+       digitalWrite(side_light_pin[1], HIGH);
     }
+
 
 
 
