@@ -1,29 +1,31 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Robot, Part, Controls, Button, Slider, ValueDisplay
+from django.http.response import StreamingHttpResponse
+from .apis.livevideo import VideoCamera, IPWebCam, LiveWebCam
 # Create your views here.
 
+
 def index(request):
-    return render(request, 'index.html')
-def lobby(request):
-    return render(request, 'chat/lobby.html', )
+	return render(request, 'livevideo.html')
 
-def createbot(request):
-    if request.method == 'GET':
-        R = Robot.objects.create(name="Mechbot",
-                             type="UGV",
-                             year="2022",
-                             serial_number="1")
-        C = Controls.objects.create(name="Mechbot Controls")
 
-        for i in range(1, 7):
-            S = Slider.objects.create(name="CH" + str(i),
-                                      description="CHANNEL " + str(i),
-                                      value=1000,
-                                      max_value=1000,
-                                      min_value=2000)
-            C.slider.add(S)
-        C.save()
-        R.controls.add(C)
-        R.save()
-        return HttpResponse("Bot created")
+def gen(camera):
+	while True:
+		frame = camera.get_frame()
+		yield (b'--frame\r\n'
+				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+def video_feed(request):
+	return StreamingHttpResponse(gen(VideoCamera()),
+					content_type='multipart/x-mixed-replace; boundary=frame')
+
+
+def webcam_feed(request):
+	return StreamingHttpResponse(gen(IPWebCam()),
+					content_type='multipart/x-mixed-replace; boundary=frame')
+
+
+
+def livecam_feed(request):
+	return StreamingHttpResponse(gen(LiveWebCam()),
+					content_type='multipart/x-mixed-replace; boundary=frame')
