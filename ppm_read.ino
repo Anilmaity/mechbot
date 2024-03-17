@@ -38,3 +38,5 @@ void read_rc(){
 int  i,j,k=0;
   for(k=14;k>-1;k--){if(ch1[k]>10000){j=k;}}  //detecting separation  space 10000us in that another array
   for(i=1;i<=6;i++){ch[i]=(ch1[i+j]-1000);}}     //assign 6 channel values after separation space
+
+//https://projecthub.arduino.cc/abhilashpatel121/reading-rc-receiver-ppm-signal-using-arduino-63de0c
